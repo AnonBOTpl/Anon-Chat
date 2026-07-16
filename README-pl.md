@@ -7,6 +7,8 @@ Przejmij pełną kontrolę nad swoim czatem. Organizuj wiadomości w osobnych ok
 ![Fabric](https://img.shields.io/badge/Fabric-dbd0b4?style=flat-square&logo=fabricmc)
 ![Licencja](https://img.shields.io/badge/Licencja-AGPL--3.0-blue?style=flat-square)
 
+![Demo AnonChat Mod](images/Animation3.gif)
+
 ---
 
 ## ✨ Funkcje
@@ -68,9 +70,13 @@ Zdefiniuj **tagi włączające i wykluczające** dla każdej karty, by kierować
 - Kliknij **> Ustawienia**, by otworzyć ekran konfiguracji
 - Lub użyj klawisza skrótu (jeśli ustawiony przez ModMenu)
 
+![Ekran ustawień](images/settings.png)
+
 ### Tworzenie okien i kart
 - Użyj **menu hamburgera** na dowolnym oknie, by dodać/usunąć karty lub utworzyć nowe okno
 - W Ustawieniach → lewy panel, rozwijaj/zwijaj okna i zarządzaj poszczególnymi kartami
+
+![Ustawienia karty](images/tab-settings.png)
 
 ### Konfiguracja filtrów
 1. Wybierz kartę w lewym panelu
@@ -78,6 +84,8 @@ Zdefiniuj **tagi włączające i wykluczające** dla każdej karty, by kierować
 3. Dodaj **tagi włączające** — wiadomości z tymi słowami trafią TYLKO do tej karty
 4. Dodaj **tagi wykluczające** — wiadomości z tymi słowami zostaną zablokowane
 5. Skonfiguruj dodatkowe akcje: dźwięk, zmiana tła
+
+![Konfiguracja filtrów](images/filters.png)
 
 ### Korzystanie z profili
 1. W Ustawieniach → **☰ Profile**
