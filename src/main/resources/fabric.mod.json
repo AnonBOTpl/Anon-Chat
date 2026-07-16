@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "anonchat",
+  "version": "${version}",
+  "name": "AnonChat Mod",
+  "description": "Advanced chat filtering and tab management for Minecraft. Blocks, filters, and organizes chat messages.",
+  "authors": [
+    "AnonBOTpl"
+  ],
+  "license": "AGPL-3.0",
+  "icon": "assets/anonchat/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.anonlauncher.chatmod.AnonChatMod"
+    ],
+    "modmenu": [
+      "net.anonchat.client.gui.AnonChatModMenu"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loaderVersion}",
+    "fabric-api": ">=${fabricApiVersion}",
+    "minecraft": ">=${mcVersion} <=${maxMcVersion}",
+    "java": ">=${javaVersion}"
+  }
+}

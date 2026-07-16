@@ -1,0 +1,54 @@
+# --- Gradle ---
+# Dotyczy roota ORAZ podfolderow 26.1.2/ i 26.2/ (wzorce bez / na starcie
+# dopasowuja sie na kazdym poziomie zagniezdzenia)
+.gradle/
+build/
+bin/
+out/
+
+# Wrapper JAR-a NIE ignorujemy (gradle/wrapper/gradle-wrapper.jar) — ma zostac
+# w repo, standard dla projektow Fabric. Jesli mimo to chcesz go ignorowac,
+# odkomentuj linie nizej:
+# gradle/wrapper/gradle-wrapper.jar
+
+# --- Fabric / Minecraft dev environment ---
+# Folder tworzony przez Loom przy odpalaniu klienta/servera z Gradle
+# (zawiera saves, logs, options.txt, config itp. — nigdy nie commitowac)
+run/
+26.1.2/run/
+26.2/run/
+
+# Logi z uruchomien
+*.log
+crash-reports/
+logs/
+
+# --- IDE ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+*.launch
+
+# --- System / OS ---
+.DS_Store
+Thumbs.db
+
+# --- Java ---
+*.class
+hs_err_pid*
+
+# --- Sekrety / lokalne override'y ---
+# Jesli kiedykolwiek dodasz lokalne wlasciwosci z kluczami/tokenami
+local.properties
+*.env
+
+# --- Notatki robocze (opcjonalnie odkomentuj jesli nie chcesz ich w repo) ---
+kontynuacja.txt
+DEVLOG.md
+ideas.md
+nowe-funkcje.md
