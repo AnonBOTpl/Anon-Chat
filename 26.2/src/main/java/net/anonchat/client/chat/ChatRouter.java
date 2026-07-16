@@ -31,8 +31,8 @@ public class ChatRouter {
 
         boolean caughtByCustomTab = false;
         for (final ChatWindow window : windows) {
-            if (window.isMainWindow()) continue;
             for (final ChatTab tab : window.getTabs()) {
+                if (tab.getConfig().isServerTab()) continue;
                 if (!(tab instanceof ChatTabImpl)) continue;
                 final ChatTabProperties props = tab.getConfig().getProperties();
                 if (props == null) continue;
@@ -52,6 +52,7 @@ public class ChatRouter {
         for (final ChatWindow window : windows) {
             if (!window.isMainWindow()) continue;
             for (final ChatTab tab : window.getTabs()) {
+                if (!tab.getConfig().isServerTab()) continue;
                 if (!(tab instanceof ChatTabImpl)) continue;
                 final ChatTabProperties props = tab.getConfig().getProperties();
                 if (props == null) continue;

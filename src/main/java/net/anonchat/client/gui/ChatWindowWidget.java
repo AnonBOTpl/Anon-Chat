@@ -393,14 +393,12 @@ public final class ChatWindowWidget {
             if (ChatConfig.getInstance() != null) ChatConfig.getInstance().getWindows().remove(settings);
         }
         saveConfig();
-        AnonChatMod.reloadEverything();
     }
 
     private void deleteThisWindow() {
         overlay.getWindows().remove(this);
         if (ChatConfig.getInstance() != null) ChatConfig.getInstance().getWindows().remove(settings);
         saveConfig();
-        AnonChatMod.reloadEverything();
     }
 
     private void addNewTab() {
@@ -412,7 +410,6 @@ public final class ChatWindowWidget {
             tabWidgets.add(new ChatTabWidget(newTab, this));
         }
         saveConfig();
-        AnonChatMod.reloadEverything();
     }
 
     private void addNewWindow() {

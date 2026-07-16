@@ -237,7 +237,6 @@ public final class AnonChatConfigScreen extends Screen {
                         if (selWindow == wiFin) { selWindow = -1; selection = SelectionType.GLOBAL; }
                         else if (selWindow > wiFin) selWindow--;
                         save();
-                        net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
                         markDirty();
                     }
                 ).dimensions(TREE_WIDTH - 34, y, 22, 18).build());
@@ -276,7 +275,6 @@ public final class AnonChatConfigScreen extends Screen {
                                     selTab = -1; selection = SelectionType.GLOBAL;
                                 }
                                 save();
-                                net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
                                 markDirty();
                             }
                             ).dimensions(TREE_WIDTH - 32, y, 20, 18).build());
@@ -297,7 +295,6 @@ public final class AnonChatConfigScreen extends Screen {
                             selWindow = wiAdd; selTab = w.getTabs().size() - 1;
                             selection = SelectionType.TAB;
                             save();
-                            net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
                             markDirty();
                         }
                     }
@@ -316,7 +313,6 @@ public final class AnonChatConfigScreen extends Screen {
                 selWindow = wins.size() - 1; selTab = 0;
                 selection = SelectionType.TAB;
                 save();
-                net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
                 markDirty();
             }
         ).dimensions(INDENT, y, TREE_WIDTH - INDENT, 18).build());
@@ -731,7 +727,6 @@ public final class AnonChatConfigScreen extends Screen {
                     if (win != null) {
                         win.deleteTab(currentTab());
                         save();
-                        net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
                         selection = SelectionType.GLOBAL; markDirty();
                     }
                 }

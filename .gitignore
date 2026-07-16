@@ -50,5 +50,6 @@ local.properties
 # --- Notatki robocze (opcjonalnie odkomentuj jesli nie chcesz ich w repo) ---
 kontynuacja.txt
 DEVLOG.md
+**/PLAN.md
 ideas.md
 nowe-funkcje.md
