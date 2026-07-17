@@ -2,6 +2,7 @@ package net.anonchat.client.chat;
 
 import net.minecraft.network.chat.Component;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChatMessageWrapper {
@@ -41,6 +42,23 @@ public class ChatMessageWrapper {
     public void setMetadata(final String key, final Object value) {
         metadata.put(key, value);
     }
+
+    // ── Font split cache ────────────────────────────────────────────
+
+    private transient List<net.minecraft.util.FormattedCharSequence> cachedLines;
+    private transient int cachedWidth = -1;
+
+    public List<net.minecraft.util.FormattedCharSequence> getOrComputeLines(net.minecraft.client.gui.Font font, net.minecraft.network.chat.Component displayComponent, int width) {
+        if (displayComponent != this.getComponent()) {
+            return font.split(displayComponent, width);
+        }
+        if (cachedLines != null && cachedWidth == width) return cachedLines;
+        cachedWidth = width;
+        cachedLines = font.split(displayComponent, width);
+        return cachedLines;
+    }
+
+    public void invalidateCache() { cachedLines = null; }
 
     private int repeatCount;
 

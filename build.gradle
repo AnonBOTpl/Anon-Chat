@@ -7,7 +7,7 @@ base {
     archivesName = "AnonChatMod-1.21.1-1.21.5"
 }
 
-version = "0.2.0"
+version = "0.2.1"
 group = "net.anonlauncher"
 
 repositories {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.anonchat.client.AnonChatMod;
+import net.anonchat.client.chat.ChatMessageWrapper;
 import net.anonchat.client.chat.ChatTab;
 import net.anonchat.client.chat.ChatTabImpl;
 import net.anonchat.client.chat.ChatWindow;
@@ -158,17 +159,21 @@ public final class ChatWindowWidget {
             context.text(font, Component.literal(RESIZE_ICON), iconX, iconY, BORDER_COLOR, false);
         }
 
-        // ── Resize-edge indicator ────────────────────────────────────────
+        // ── Resize-edge indicator (subtle highlight bar on the border) ──
         if (focused) {
             final int indicator = resizeEdge != 0 ? resizeEdge : hoveredEdge;
             if (indicator != 0) {
-                final int midX = x + width / 2;
-                final int midY = y + height / 2;
-                final int c = 0xFFFFFF55;
-                if ((indicator & EDGE_LEFT) != 0) context.fill(x - 4, midY - 4, x + 4, midY + 4, c);
-                if ((indicator & EDGE_RIGHT) != 0) context.fill(x + width - 4, midY - 4, x + width + 4, midY + 4, c);
-                if ((indicator & EDGE_TOP) != 0) context.fill(midX - 4, y - 4, midX + 4, y + 4, c);
-                if ((indicator & EDGE_BOTTOM) != 0) context.fill(midX - 4, y + height - 4, midX + 4, y + height + 4, c);
+                final int barLen = 14;
+                final int barWid = 2;
+                final int c = 0xAAFFFFFF;
+                if ((indicator & EDGE_LEFT) != 0)
+                    context.fill(x, y + height / 2 - barLen / 2, x + barWid, y + height / 2 + barLen / 2, c);
+                if ((indicator & EDGE_RIGHT) != 0)
+                    context.fill(x + width - barWid, y + height / 2 - barLen / 2, x + width, y + height / 2 + barLen / 2, c);
+                if ((indicator & EDGE_TOP) != 0)
+                    context.fill(x + width / 2 - barLen / 2, y, x + width / 2 + barLen / 2, y + barWid, c);
+                if ((indicator & EDGE_BOTTOM) != 0)
+                    context.fill(x + width / 2 - barLen / 2, y + height - barWid, x + width / 2 + barLen / 2, y + height, c);
             }
         }
     }
@@ -286,6 +291,14 @@ public final class ChatWindowWidget {
         resizeEdge = 0;
         settings.setWidth(width);
         settings.setHeight(height);
+        // Invalidate font-split cache for all messages (width changed)
+        for (final ChatTab tab : chatWindow.getTabs()) {
+            if (tab instanceof ChatTabImpl) {
+                for (final ChatMessageWrapper msg : ((ChatTabImpl) tab).getMessages()) {
+                    msg.invalidateCache();
+                }
+            }
+        }
         final Minecraft mc = Minecraft.getInstance();
         if (mc.getWindow() != null) {
             final int sw = mc.getWindow().getGuiScaledWidth(), sh = mc.getWindow().getGuiScaledHeight();

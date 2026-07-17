@@ -1,6 +1,7 @@
 package net.anonlauncher.chatmod;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
@@ -164,8 +165,12 @@ public final class AnonChatMod implements ClientModInitializer {
                     pressedMacroKeys.remove(code);
                 }
             }
+        });        // ── Shutdown hook — close chat log file ──────────────────────
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+            ChatLogger.close();
         });
 
         System.out.println("[AnonChat] Hook registered. Ready!");
     }
 }
+

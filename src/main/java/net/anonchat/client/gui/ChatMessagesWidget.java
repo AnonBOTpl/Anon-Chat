@@ -108,7 +108,7 @@ public final class ChatMessagesWidget {
                 final Text prefix = Text.literal("[×" + (repeat + 1) + "] ");
                 component = prefix.copy().append(component);
             }
-            final List<OrderedText> lines = textRenderer.wrapLines(component, areaWidth - leftMargin - 2);
+            final List<OrderedText> lines = wrapper.getOrComputeLines(textRenderer, component, areaWidth - leftMargin - 2);
             wrappedLines.add(lines);
             totalLines += lines.size();
         }
