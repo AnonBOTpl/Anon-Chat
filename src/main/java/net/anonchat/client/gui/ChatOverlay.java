@@ -35,6 +35,7 @@ public final class ChatOverlay {
     // ── Focus state (chat open = ChatScreen visible) ──────────────────────
 
     private boolean chatFocused = false;
+    private boolean wasChatFocused = false;
 
     public boolean isChatFocused() { return chatFocused; }
 
@@ -134,6 +135,14 @@ public final class ChatOverlay {
 
         this.chatFocused = mc.currentScreen instanceof ChatScreen;
 
+        // Auto-reset scroll when chat focus is lost
+        if (wasChatFocused && !chatFocused) {
+            for (final ChatWindowWidget window : windows) {
+                window.resetMessagesScroll();
+            }
+        }
+        wasChatFocused = chatFocused;
+
         for (final ChatWindowWidget window : windows) {
             window.render(context, chatFocused);
         }
@@ -145,7 +154,10 @@ public final class ChatOverlay {
      * other GUIs (inventory, furnace, server screens, ...).
      */
     private static boolean isOverlayVisible(final MinecraftClient mc) {
-        return mc.currentScreen == null || mc.currentScreen instanceof ChatScreen;
+        if (mc.currentScreen == null || mc.currentScreen instanceof ChatScreen) return true;
+        // Show on all screens if the option is enabled
+        final ChatConfig cfg = ChatConfig.getInstance();
+        return cfg != null && cfg.getFontSettings() != null && cfg.getFontSettings().isShowChatOnAllScreens();
     }
 
     // ── Mouse coordinate tracking ─────────────────────────────────────────

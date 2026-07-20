@@ -180,6 +180,10 @@ public final class ChatWindowWidget {
 
     public void setHoveredEdge(final int edge) { this.hoveredEdge = edge; }
 
+    public void setMessagesMousePos(final double mx, final double my) {
+        messagesWidget.setMousePos(mx, my);
+    }
+
     /** Smart dropdown X: prefers outside the window, falls back to outside on other side. */
     private int getDropdownX() {
         final Minecraft mc = Minecraft.getInstance();
@@ -440,6 +444,7 @@ public final class ChatWindowWidget {
     private void saveConfig() { try { ChatConfig.getInstance().save(); } catch (final Exception ignored) {} }
 
     public void scrollMessages(final double delta) { messagesWidget.mouseScrolled(delta); }
+    public void resetMessagesScroll() { messagesWidget.resetScroll(); }
     public void setPosition(final int newX, final int newY) { x = newX; y = newY; dragging = true; }
 
     public void commitPosition() {

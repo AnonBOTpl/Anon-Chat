@@ -24,6 +24,7 @@ public final class ChatOverlay {
     private final List<ChatWindowWidget> windows = new ArrayList<>();
     private boolean registered = false;
     private boolean chatFocused = false;
+    private boolean wasChatFocused = false;
 
     public boolean isChatFocused() { return chatFocused; }
 
@@ -108,7 +109,16 @@ public final class ChatOverlay {
 
         this.chatFocused = mc.gui.screen() instanceof ChatScreen;
 
+        // Auto-reset scroll when chat focus is lost
+        if (wasChatFocused && !chatFocused) {
+            for (final ChatWindowWidget window : windows) {
+                window.resetMessagesScroll();
+            }
+        }
+        wasChatFocused = chatFocused;
+
         for (final ChatWindowWidget window : windows) {
+            window.setMessagesMousePos(mouseX, mouseY);
             window.render(context, chatFocused);
         }
     }

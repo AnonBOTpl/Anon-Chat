@@ -13,10 +13,32 @@ import net.anonchat.client.config.ChatTabProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.server.dialog.Dialog;
+import net.minecraft.server.dialog.ActionButton;
+import net.minecraft.server.dialog.action.StaticAction;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.FormattedCharSink;
 
 public final class ChatMessagesWidget {
+
+    // ── Styled run tracking for click/hover events ────────────────
+
+    private static final class StyledRun {
+        final int x, y, width, height;
+        final Style style;
+
+        StyledRun(final int x, final int y, final int width, final int height, final Style style) {
+            this.x = x; this.y = y; this.width = width; this.height = height; this.style = style;
+        }
+
+        boolean contains(final double mx, final double my) {
+            return mx >= x && mx <= x + width && my >= y && my <= y + height;
+        }
+    }
 
     private static final int SCROLLBAR_WIDTH = 3;
     private static final int SCROLLBAR_BG = 0x40FFFFFF;
@@ -26,8 +48,17 @@ public final class ChatMessagesWidget {
     private int lineOffset = 0;
     private int lastTotalLines = 0;
 
+    private final List<StyledRun> styledRuns = new ArrayList<>();
+    private double mouseX;
+    private double mouseY;
+
     public ChatMessagesWidget(final ChatWindow chatWindow) {
         this.chatWindow = chatWindow;
+    }
+
+    public void setMousePos(final double mx, final double my) {
+        this.mouseX = mx;
+        this.mouseY = my;
     }
 
     private FontSettings fs() {
@@ -86,6 +117,8 @@ public final class ChatMessagesWidget {
         final int textColor = (textAlpha << 24) | 0xFFFFFF;
         final int shadowColor = (Math.min(255, textAlpha / 2) << 24) | 0x000000;
 
+        styledRuns.clear();
+
         // ── Wrap lines ───────────────────────────────────────────
         final List<List<FormattedCharSequence>> wrappedLines = new ArrayList<>(messages.size());
         int totalLines = 0;
@@ -120,12 +153,6 @@ public final class ChatMessagesWidget {
             }
             this.lastTotalLines = totalLines;
         }
-
-        final int rowHeight = lineSpacing + msgSpacing;
-        // total height used per row when drawing (includes message spacing after each message)
-        // We need to compute visible rows considering that each message's FIRST wrapped line
-        // gets msgSpacing extra, subsequent lines of same message don't.
-        // Simplified: treat each rendered unit as lineSpacing + (msgSpacing if first line of message).
 
         final int maxVisibleLines = Math.max(1, areaHeight / lineSpacing);
         final int maxOffset = Math.max(0, totalLines - maxVisibleLines);
@@ -188,6 +215,22 @@ public final class ChatMessagesWidget {
                             textX = areaX + leftMargin;
                     }
 
+                    // ── Build styled runs for click/hover ────────────────────────
+                    {
+                        final float[] charX = {textX};
+                        line.accept(new FormattedCharSink() {
+                            @Override
+                            public boolean accept(final int index, final Style style, final int codePoint) {
+                                final int cw = font.width(Character.toString(codePoint));
+                                if (style.getClickEvent() != null || style.getHoverEvent() != null) {
+                                    styledRuns.add(new StyledRun((int) charX[0], textY, cw, lineSpacing, style));
+                                }
+                                charX[0] += cw;
+                                return true;
+                            }
+                        });
+                    }
+
                     if (shadow) {
                         context.text(font, line, textX + 1, textY + 1, shadowColor);
                     }
@@ -195,6 +238,30 @@ public final class ChatMessagesWidget {
                 }
 
                 renderedLineIndex++;
+            }
+        }
+
+        // ── Render hover tooltip ──────────────────────────────────
+        if (!styledRuns.isEmpty()) {
+            for (final StyledRun run : styledRuns) {
+                if (run.contains(mouseX, mouseY)) {
+                    final HoverEvent hover = run.style.getHoverEvent();
+                    if (hover instanceof HoverEvent.ShowText showText) {
+                        final Component tooltipValue = showText.value();
+                        final String raw = tooltipValue.getString();
+                        if (raw.contains("\n")) {
+                            final List<Component> lines = new ArrayList<>();
+                            for (final String line : raw.split("\n")) {
+                                lines.add(Component.literal(line).setStyle(tooltipValue.getStyle()));
+                            }
+                            context.setComponentTooltipForNextFrame(font, lines, (int) mouseX, (int) mouseY);
+                        } else {
+                            context.setComponentTooltipForNextFrame(
+                                font, List.of(tooltipValue), (int) mouseX, (int) mouseY);
+                        }
+                    }
+                    break;
+                }
             }
         }
 
@@ -214,6 +281,69 @@ public final class ChatMessagesWidget {
     }
 
     public void mouseClicked(final double mouseX, final double mouseY, final int button) {
+        if (button != 0) return;
+        final Minecraft mc = Minecraft.getInstance();
+        for (final StyledRun run : styledRuns) {
+            if (run.contains(mouseX, mouseY)) {
+                final ClickEvent click = run.style.getClickEvent();
+                if (click != null) {
+                    handleClickEvent(mc, click);
+                    return;
+                }
+            }
+        }
+    }
+
+    private static void handleClickEvent(final Minecraft mc, final ClickEvent event) {
+        if (event instanceof ClickEvent.OpenUrl openUrl) {
+            try {
+                java.net.URI uri = openUrl.uri();
+                if (uri.getScheme() == null) {
+                    uri = new java.net.URI("https://" + uri);
+                }
+                java.awt.Desktop.getDesktop().browse(uri);
+            } catch (final Exception ignored) {}
+        } else if (event instanceof ClickEvent.OpenFile openFile) {
+            try {
+                java.awt.Desktop.getDesktop().open(new java.io.File(openFile.path()));
+            } catch (final Exception ignored) {}
+        } else if (event instanceof ClickEvent.RunCommand runCmd) {
+            String cmd = runCmd.command();
+            if (cmd.startsWith("/")) cmd = cmd.substring(1);
+            if (mc.getConnection() != null) {
+                mc.getConnection().sendCommand(cmd);
+            }            } else if (event instanceof ClickEvent.SuggestCommand suggestCmd) {
+            if (mc.player != null) {
+                mc.setScreen(new net.minecraft.client.gui.screens.ChatScreen(suggestCmd.command(), false));
+            }
+        } else if (event instanceof ClickEvent.CopyToClipboard copy) {
+            mc.keyboardHandler.setClipboard(copy.value());
+        } else if (event instanceof ClickEvent.ShowDialog showDialog) {
+            // Extract ClickEvent from dialog buttons and handle recursively
+            try {
+                final Dialog dialog = showDialog.dialog().value();
+                // Check cancel action
+                dialog.onCancel().ifPresent(a -> tryHandleAction(mc, a));
+                // Check ConfirmationDialog buttons
+                if (dialog instanceof net.minecraft.server.dialog.ConfirmationDialog confirm) {
+                    tryHandleAction(mc, confirm.yesButton().action().orElse(null));
+                }
+                // Check ButtonListDialog exit action
+                if (dialog instanceof net.minecraft.server.dialog.ButtonListDialog btnList) {
+                    btnList.exitAction().ifPresent(btn ->
+                        btn.action().ifPresent(a -> tryHandleAction(mc, a)));
+                }
+            } catch (final Exception ignored) {}
+        }
+    }
+
+    private static void tryHandleAction(final Minecraft mc, final net.minecraft.server.dialog.action.Action action) {
+        if (action instanceof StaticAction staticAction) {
+            final ClickEvent click = staticAction.value();
+            if (click != null) {
+                handleClickEvent(mc, click);
+            }
+        }
     }
 
     private ChatTabImpl getActiveTabImpl() {

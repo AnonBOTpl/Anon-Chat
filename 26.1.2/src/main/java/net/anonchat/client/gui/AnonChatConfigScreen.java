@@ -45,6 +45,9 @@ public final class AnonChatConfigScreen extends Screen {
     private EditBox unfocusedBgColorField;
 
     // Color picker state: 0=closed, 1=bgColor, 2=unfocusedBgColor
+
+
+
     private int expandedColorPicker = 0;
     private boolean expandedPingPicker = false;
     private EditBox timeoutField;
@@ -55,7 +58,8 @@ public final class AnonChatConfigScreen extends Screen {
     private int pingSwatchY = 0;
 
     private enum SelectionType {
-        GLOBAL, TAB, FILTER_LIST, FILTER_DETAIL, MACROS, FONT, PROFILES
+        GLOBAL, TAB, FILTER_LIST, FILTER_DETAIL, MACROS,        FONT,
+        PROFILES
     }
 
     public AnonChatConfigScreen(final Screen parent) {

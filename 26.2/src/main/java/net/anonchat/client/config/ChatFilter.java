@@ -37,57 +37,45 @@ public class ChatFilter {
         final String text = caseSensitive ? message : message.toUpperCase();
         final boolean hasInclude = hasIncludeCriteria();
         final boolean hasExclude = hasExcludeCriteria();
-        boolean excludeMatched = false;
 
-        if (excludeTags != null && !excludeTags.isEmpty()) {
-            for (final String tag : excludeTags) {
+        // 1. Check include criteria first (include wins over exclude)
+        if (hasInclude) {
+            boolean includeMatched = checkCriteria(includeTags, includeWords, includeRegEx, text);
+            if (includeMatched) return true; // include always wins
+            return false; // include exists but didn't match → reject
+        }
+
+        // 2. Exclude-only filter (no include criteria) — matches for routing purposes
+        if (hasExclude && checkCriteria(excludeTags, excludeWords, excludeRegEx, text)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkCriteria(final List<String> tags, final String words, final String regex, final String text) {
+        if (tags != null && !tags.isEmpty()) {
+            for (final String tag : tags) {
                 final String search = caseSensitive ? tag : tag.toUpperCase();
-                if (!search.isEmpty() && text.contains(search)) { excludeMatched = true; break; }
+                if (!search.isEmpty() && text.contains(search)) return true;
             }
         }
-        if (!excludeMatched && excludeWords != null && !excludeWords.isEmpty()) {
-            final String words = caseSensitive ? excludeWords : excludeWords.toUpperCase();
-            for (final String word : words.split(";")) {
+        if (words != null && !words.isEmpty()) {
+            final String w = caseSensitive ? words : words.toUpperCase();
+            for (final String word : w.split(";")) {
                 final String trimmed = word.trim();
-                if (!trimmed.isEmpty() && text.contains(trimmed)) { excludeMatched = true; break; }
+                if (!trimmed.isEmpty() && text.contains(trimmed)) return true;
             }
         }
-        if (!excludeMatched && excludeRegEx != null && !excludeRegEx.isEmpty()) {
+        if (regex != null && !regex.isEmpty()) {
             try {
                 final Pattern pattern = caseSensitive
-                    ? Pattern.compile(excludeRegEx)
-                    : Pattern.compile(excludeRegEx, Pattern.CASE_INSENSITIVE);
-                if (pattern.matcher(text).find()) excludeMatched = true;
+                    ? Pattern.compile(regex)
+                    : Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+                if (pattern.matcher(text).find()) return true;
             } catch (final PatternSyntaxException ignored) {}
         }
-        if (excludeMatched) return !hasInclude;
-
-        if (hasInclude) {
-            boolean includeMatched = false;
-            if (includeTags != null && !includeTags.isEmpty()) {
-                for (final String tag : includeTags) {
-                    final String search = caseSensitive ? tag : tag.toUpperCase();
-                    if (!search.isEmpty() && text.contains(search)) { includeMatched = true; break; }
-                }
-            }
-            if (!includeMatched && includeWords != null && !includeWords.isEmpty()) {
-                final String words = caseSensitive ? includeWords : includeWords.toUpperCase();
-                for (final String word : words.split(";")) {
-                    final String trimmed = word.trim();
-                    if (!trimmed.isEmpty() && text.contains(trimmed)) { includeMatched = true; break; }
-                }
-            }
-            if (!includeMatched && includeRegEx != null && !includeRegEx.isEmpty()) {
-                try {
-                    final Pattern pattern = caseSensitive
-                        ? Pattern.compile(includeRegEx)
-                        : Pattern.compile(includeRegEx, Pattern.CASE_INSENSITIVE);
-                    if (pattern.matcher(text).find()) includeMatched = true;
-                } catch (final PatternSyntaxException ignored) {}
-            }
-            return includeMatched;
-        }
-        return !hasInclude && !hasExclude;
+        return false;
     }
 
     public boolean hasIncludeCriteria() {

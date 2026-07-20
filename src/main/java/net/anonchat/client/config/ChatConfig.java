@@ -48,6 +48,10 @@ public final class ChatConfig {
         @SerializedName("pingColor") private int pingColor = 0xFFFFAA00;
         @SerializedName("pingSound") private String pingSound = "pling";
         @SerializedName("chatlogEnabled") private boolean chatlogEnabled = true;
+        @SerializedName("showChatOnAllScreens") private boolean showChatOnAllScreens = false;
+
+        public boolean isShowChatOnAllScreens() { return showChatOnAllScreens; }
+        public void setShowChatOnAllScreens(final boolean v) { this.showChatOnAllScreens = v; }
 
         public int getLineSpacing() { return lineSpacing; }
         public void setLineSpacing(final int s) { this.lineSpacing = Math.max(6, Math.min(24, s)); }

@@ -24,10 +24,12 @@ public class ChatRouter {
 
     public boolean dispatchMessage(final ChatMessage message) {
         if (message == null || message.getPlainText() == null) return false;
-        final String text = message.getPlainText();
+        String text = message.getPlainText();
 
         // Log raw message to daily chat log file
         ChatLogger.log(text);
+
+
 
         boolean caughtByCustomTab = false;
         for (final ChatWindow window : windows) {

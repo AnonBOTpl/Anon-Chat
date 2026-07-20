@@ -56,7 +56,9 @@ public class ChatTabImpl extends ChatTab {
             for (final ChatFilter filter : filters) {
                 if (filter == null) continue;
                 if (filter.matches(text)) {
-                    filterMatched = true;
+                    if (filter.hasIncludeCriteria()) {
+                        filterMatched = true;
+                    }
                     if (filter.isShouldPlaySound()) {
                         playNotificationSound();
                     }

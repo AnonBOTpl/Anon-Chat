@@ -572,6 +572,10 @@ public final class AnonChatConfigScreen extends Screen {
             v -> { fs.setLeftMargin(v); save(); });
         y += 30;
 
+        // Show chat on all screens
+        chk("key.anonchat.appearance.show_all_screens", fs.isShowChatOnAllScreens(), px, y, cw, v -> { fs.setShowChatOnAllScreens(v); save(); });
+        y += 22;
+
         // ── Config folder section ───────────────────────────────────────
         this.addDrawableChild(lbl("\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500", px, y));
         y += 16;

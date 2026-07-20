@@ -78,6 +78,7 @@
   "key.anonchat.appearance.ping.sound": "Ping sound:",
   "key.anonchat.appearance.chatlog": "\u260e Save chat history to file",
   "key.anonchat.appearance.open_logs": "Open chat logs folder",
+  "key.anonchat.appearance.show_all_screens": "Show chat on all screens",
   "key.anonchat.appearance.open_config": "Open config folder",
 
   "key.anonchat.profiles.title": "\u00a7lProfiles",
