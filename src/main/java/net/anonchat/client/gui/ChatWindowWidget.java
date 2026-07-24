@@ -5,9 +5,11 @@ import java.util.List;
 
 import net.anonlauncher.chatmod.AnonChatMod;
 import net.anonchat.client.chat.ChatMessageWrapper;
+import net.anonchat.client.chat.ChatRouter;
 import net.anonchat.client.chat.ChatTab;
 import net.anonchat.client.chat.ChatTabImpl;
 import net.anonchat.client.chat.ChatWindow;
+import net.anonchat.client.chat.DefaultChatWindow;
 import net.anonchat.client.config.ChatConfig;
 import net.anonchat.client.config.ChatTabConfig;
 import net.anonchat.client.config.ChatWindowSettings;
@@ -24,6 +26,7 @@ public final class ChatWindowWidget {
     private static final int BACKGROUND_COLOR = 0x40000000;
     private static final int BORDER_COLOR = 0xFF555555;
     private static final int HAMBURGER_SIZE = 10;
+    private static final int LOCK_SIZE = 10;
     private static final int DROPDOWN_WIDTH = 110;
     private static final int DROPDOWN_ITEM_HEIGHT = 12;
 
@@ -136,9 +139,33 @@ public final class ChatWindowWidget {
                 tabX += twidth + 2;
             }
 
-            // Hamburger icon
+            // Lock icon (left of hamburger)
             final int hx = x + width - HAMBURGER_SIZE - 4;
             final int hy = y + (TAB_BAR_HEIGHT + PADDING - HAMBURGER_SIZE) / 2;
+            final int lockX = hx - LOCK_SIZE - 4;
+            final int lockY = y + (TAB_BAR_HEIGHT + PADDING - LOCK_SIZE) / 2 + 1;
+            final boolean locked = settings.isPositionLocked();
+            final int lockCol = locked ? 0xFFFFAA00 : 0xFF888888;
+            // Draw padlock: small rectangle (body) + small arc (shackle)
+            final int bw = 6, bh = 5; // body width/height
+            final int bx = lockX + (LOCK_SIZE - bw) / 2;
+            final int by = lockY + 4;
+            context.fill(bx, by, bx + bw, by + bh, lockCol); // body
+            // Shackle (arc): two vertical bars + horizontal bar
+            final int sw = 2; // shackle width
+            final int shackleTop = by - 3;
+            if (locked) {
+                context.fill(bx + 1, shackleTop, bx + 1 + sw, by, lockCol); // left bar
+                context.fill(bx + bw - 1 - sw, shackleTop, bx + bw - 1, by, lockCol); // right bar
+                context.fill(bx + 1, shackleTop, bx + bw - 1, shackleTop + sw, lockCol); // top bar
+            } else {
+                // Draw a gap in the shackle (unlocked)
+                context.fill(bx + 1, shackleTop, bx + 1 + sw, by - 1, lockCol);
+                context.fill(bx + bw - 1 - sw, shackleTop, bx + bw - 1, by - 1, lockCol);
+                context.fill(bx + 1, shackleTop, bx + bw - 1, shackleTop + sw, lockCol);
+            }
+
+            // Hamburger icon
             final int hCol = hamburgerOpen ? 0xFFFFFFAA : 0xFFCCCCCC;
             for (int i = 0; i < 3; i++)
                 context.fill(hx, hy + i * 3, hx + 8, hy + i * 3 + 1, hCol);
@@ -256,6 +283,7 @@ public final class ChatWindowWidget {
     public boolean isResizing() { return resizeEdge != 0; }
 
     public void startResize(final int edge, final double mouseX, final double mouseY) {
+        if (settings.isPositionLocked()) return;
         this.resizeEdge = edge;
         this.resizeStartMouseX = (int) Math.round(mouseX);
         this.resizeStartMouseY = (int) Math.round(mouseY);
@@ -328,12 +356,24 @@ public final class ChatWindowWidget {
         }
         final int hx = x + width - HAMBURGER_SIZE - 4;
         final int hy = y + (TAB_BAR_HEIGHT + PADDING - HAMBURGER_SIZE) / 2;
+        final int lockX = hx - LOCK_SIZE - 4;
+        final int lockY = y + (TAB_BAR_HEIGHT + PADDING - LOCK_SIZE) / 2 + 1;
+        // Exclude lock icon area
+        if (mx >= lockX && mx <= lockX + LOCK_SIZE && my >= lockY && my <= lockY + LOCK_SIZE) return false;
         return mx < hx || mx > hx + HAMBURGER_SIZE || my < hy || my > hy + HAMBURGER_SIZE;
     }
 
     public boolean clickHamburger(final double mx, final double my) {
         final int hx = x + width - HAMBURGER_SIZE - 4;
         final int hy = y + (TAB_BAR_HEIGHT + PADDING - HAMBURGER_SIZE) / 2;
+        final int lockX = hx - LOCK_SIZE - 4;
+        final int lockY = y + (TAB_BAR_HEIGHT + PADDING - LOCK_SIZE) / 2 + 1;
+        // Lock icon click
+        if (mx >= lockX && mx <= lockX + LOCK_SIZE && my >= lockY && my <= lockY + LOCK_SIZE) {
+            settings.setPositionLocked(!settings.isPositionLocked());
+            saveConfig();
+            return true;
+        }
         if (mx >= hx && mx <= hx + HAMBURGER_SIZE && my >= hy && my <= hy + HAMBURGER_SIZE) {
             hamburgerOpen = !hamburgerOpen;
             return true;
@@ -432,14 +472,21 @@ public final class ChatWindowWidget {
             ChatConfig.getInstance().getWindows().add(newSettings);
             saveConfig();
         }
-        AnonChatMod.reloadEverything();
+        // Add new window directly without clearing existing messages
+        final ChatRouter router = AnonChatMod.getRouter();
+        final DefaultChatWindow chatWindow = new DefaultChatWindow(newSettings);
+        router.getWindows().add(chatWindow);
+        overlay.getWindows().add(new ChatWindowWidget(chatWindow, newSettings, overlay));
     }
 
     private void saveConfig() { try { ChatConfig.getInstance().save(); } catch (final Exception ignored) {} }
 
     public void scrollMessages(final double delta) { messagesWidget.mouseScrolled(delta); }
     public void resetMessagesScroll() { messagesWidget.resetScroll(); }
-    public void setPosition(final int newX, final int newY) { x = newX; y = newY; dragging = true; }
+    public void setPosition(final int newX, final int newY) {
+        if (settings.isPositionLocked()) return;
+        x = newX; y = newY; dragging = true;
+    }
 
     public void commitPosition() {
         dragging = false;

@@ -43,6 +43,7 @@
   "key.anonchat.filter.sound": "Odtw\u00f3rz d\u017awi\u0119k",
   "key.anonchat.filter.change_bg": "Zmie\u0144 t\u0142o",
   "key.anonchat.filter.delete": "Usu\u0144 filtr",
+  "key.anonchat.filter.hide_message": "Ukryj wiadomo\u015b\u0107 (filtr nadal dzia\u0142a)",
   "key.anonchat.filter.include_placeholder": "Dodaj tag w\u0142\u0105czaj\u0105cy...",
   "key.anonchat.filter.exclude_placeholder": "Dodaj tag wykluczaj\u0105cy...",
 
@@ -94,5 +95,6 @@
   "key.anonchat.tooltip.profile_load": "Wczytaj ustawienia z tego profilu",
   "key.anonchat.tooltip.profile_save": "Zapisz obecny config jako profil",
   "key.anonchat.tooltip.profile_delete": "Usu\u0144 ten profil na sta\u0142e",
-  "key.anonchat.tooltip.open_config": "Otw\u00f3rz folder z configiem i danymi"
+  "key.anonchat.tooltip.open_config": "Otw\u00f3rz folder z configiem i danymi",
+  "key.anonchat.tooltip.lock_position": "Zablokuj / odblokuj pozycj\u0119 okna"
 }

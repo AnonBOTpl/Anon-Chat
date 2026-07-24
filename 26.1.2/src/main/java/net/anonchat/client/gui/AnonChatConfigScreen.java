@@ -40,7 +40,6 @@ public final class AnonChatConfigScreen extends Screen {
     private EditBox chatLimitField;
     private EditBox filterNameField;
     private EditBox addTagField;
-    private EditBox addExcludeTagField;
     private EditBox bgColorField;
     private EditBox unfocusedBgColorField;
 
@@ -596,8 +595,7 @@ public final class AnonChatConfigScreen extends Screen {
             final ChatFilter f = filters.get(i);
             final int fi = i;
             addRenderableWidget(Button.builder(
-                Component.literal(f.getName() + " (inc:" + f.getIncludeTags().size()
-                    + " exc:" + f.getExcludeTags().size() + ")"),
+                Component.literal(f.getName() + " (inc:" + f.getIncludeTags().size() + ")"),
                 btn -> { selFilter = fi; selection = SelectionType.FILTER_DETAIL; markDirty(); }
             ).bounds(px + 8, y, width - px - 70, 18).build());
 
@@ -664,34 +662,13 @@ public final class AnonChatConfigScreen extends Screen {
         addRenderableWidget(addTagField);
         addRenderableWidget(Button.builder(
             Component.literal("+"),
-            btn -> doAddTag(filter, true)
+            btn -> doAddTag(filter)
         ).bounds(px + 158, y, 22, 16).tooltip(Tooltip.create(tr("key.anonchat.tooltip.include_tag"))).build());
         y += 22;
 
-        // Exclude Tags
-        addRenderableWidget(lbl(tr("key.anonchat.filter.exclude").getString(), px, y));
-        y += 16;
-        int excX = px + 12;
-        int excRowY = y;
-        for (int i = 0; i < filter.getExcludeTags().size(); i++) {
-            final int ti = i;
-            final String tag = filter.getExcludeTags().get(i);
-            final int tw = font.width("[" + tag + "] \u2715") + 14;
-            if (excX + tw > width - 20) { excX = px + 12; excRowY += 20; }
-            tagPill(tag, excX, excRowY, () -> filter.getExcludeTags().remove(ti));
-            excX += tw + 8;
-        }
-        y = Math.max(y + 16, excRowY + (filter.getExcludeTags().isEmpty() ? 0 : 22));
-
-        addExcludeTagField = new EditBox(font, px + 12, y, 140, 16, Component.literal(""));
-        addExcludeTagField.setMaxLength(64);
-        addExcludeTagField.setResponder(s -> {});
-        addRenderableWidget(addExcludeTagField);
-        addRenderableWidget(Button.builder(
-            Component.literal("+"),
-            btn -> doAddTag(filter, false)
-        ).bounds(px + 158, y, 22, 16).tooltip(Tooltip.create(tr("key.anonchat.tooltip.exclude_tag"))).build());
-        y += 24;
+        // Options
+        chk("key.anonchat.filter.hide_message", filter.isHideMessage(), px, y, cw, v -> { filter.setHideMessage(v); save(); });
+        y += 22;
 
         // Options
         chk("key.anonchat.filter.sound", filter.isShouldPlaySound(), px, y, cw, v -> { filter.setShouldPlaySound(v); save(); });
@@ -900,8 +877,8 @@ public final class AnonChatConfigScreen extends Screen {
         if ((keyCode == 257 || keyCode == 335) && selection == SelectionType.FILTER_DETAIL) {
             final ChatFilter f = currentFilter();
             if (f != null) {
-                if (addTagField != null && addTagField.isFocused()) { doAddTag(f, true); return true; }
-                if (addExcludeTagField != null && addExcludeTagField.isFocused()) { doAddTag(f, false); return true; }
+                if (addTagField != null && addTagField.isFocused()) { doAddTag(f); return true; }
+
             }
         }
         return super.keyPressed(event);
@@ -909,19 +886,13 @@ public final class AnonChatConfigScreen extends Screen {
 
     // ── TAG HELPERS ─────────────────────────────────────────────────
 
-    private void doAddTag(final ChatFilter filter, final boolean include) {
-        final EditBox src = include ? addTagField : addExcludeTagField;
-        if (src == null) return;
-        final String t = src.getValue().trim();
+    private void doAddTag(final ChatFilter filter) {
+        if (addTagField == null) return;
+        final String t = addTagField.getValue().trim();
         if (t.isEmpty()) return;
-        if (include) {
-            if (filter.getIncludeTags().isEmpty()) filter.setIncludeTags(new ArrayList<>());
-            filter.getIncludeTags().add(t);
-        } else {
-            if (filter.getExcludeTags().isEmpty()) filter.setExcludeTags(new ArrayList<>());
-            filter.getExcludeTags().add(t);
-        }
-        src.setValue(""); save(); markDirty();
+        if (filter.getIncludeTags().isEmpty()) filter.setIncludeTags(new ArrayList<>());
+        filter.getIncludeTags().add(t);
+        addTagField.setValue(""); save(); markDirty();
     }
 
     // ── COLOR PICKER ──────────────────────────────────────────────

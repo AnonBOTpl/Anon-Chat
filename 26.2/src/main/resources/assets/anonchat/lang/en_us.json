@@ -43,6 +43,7 @@
   "key.anonchat.filter.sound": "Play Sound",
   "key.anonchat.filter.change_bg": "Change Background",
   "key.anonchat.filter.delete": "Delete Filter",
+  "key.anonchat.filter.hide_message": "Hide Message (filter is still applied)",
   "key.anonchat.filter.include_placeholder": "Add include tag...",
   "key.anonchat.filter.exclude_placeholder": "Add exclude tag...",
 
@@ -94,5 +95,6 @@
   "key.anonchat.tooltip.profile_load": "Load settings from this profile",
   "key.anonchat.tooltip.profile_save": "Save current config as a profile",
   "key.anonchat.tooltip.profile_delete": "Delete this profile permanently",
-  "key.anonchat.tooltip.open_config": "Open config and data folder"
+  "key.anonchat.tooltip.open_config": "Open config and data folder",
+  "key.anonchat.tooltip.lock_position": "Lock / unlock window position"
 }

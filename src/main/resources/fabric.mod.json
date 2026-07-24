@@ -10,6 +10,9 @@
   "license": "AGPL-3.0",
   "icon": "assets/anonchat/icon.png",
   "environment": "client",
+  "mixins": [
+    "anonchat.mixins.json"
+  ],
   "entrypoints": {
     "client": [
       "net.anonlauncher.chatmod.AnonChatMod"

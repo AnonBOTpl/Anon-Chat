@@ -65,6 +65,9 @@ public class ChatTabImpl extends ChatTab {
                     if (filter.isShouldChangeBackground()) {
                         message.setMetadata("custom_background", filter.getBackgroundColor());
                     }
+                    if (filter.isHideMessage()) {
+                        message.hide();
+                    }
                     break;
                 }
             }

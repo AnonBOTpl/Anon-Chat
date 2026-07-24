@@ -19,6 +19,7 @@ public class ChatFilter {
     @SerializedName("excludeWords") private String excludeWords;
     @SerializedName("includeRegEx") private String includeRegEx;
     @SerializedName("excludeRegEx") private String excludeRegEx;
+    @SerializedName("hideMessage") private boolean hideMessage;
     @SerializedName("shouldPlaySound") private boolean shouldPlaySound;
     @SerializedName("shouldChangeBackground") private boolean shouldChangeBackground;
     @SerializedName("backgroundColor") private int backgroundColor = 0xFF000000;
@@ -46,7 +47,7 @@ public class ChatFilter {
         }
 
         // 2. Exclude-only filter (no include criteria) — matches for routing purposes
-        if (hasExclude && checkCriteria(excludeTags, excludeWords, excludeRegEx, text)) {
+        if (hasExclude && checkCriteria(null, excludeWords, excludeRegEx, text)) {
             return true;
         }
 
@@ -85,8 +86,7 @@ public class ChatFilter {
     }
 
     public boolean hasExcludeCriteria() {
-        return (excludeTags != null && !excludeTags.isEmpty())
-            || (excludeWords != null && !excludeWords.isEmpty())
+        return (excludeWords != null && !excludeWords.isEmpty())
             || (excludeRegEx != null && !excludeRegEx.isEmpty());
     }
 
@@ -99,6 +99,7 @@ public class ChatFilter {
     public String getExcludeWords() { return excludeWords; }
     public String getIncludeRegEx() { return includeRegEx; }
     public String getExcludeRegEx() { return excludeRegEx; }
+    public boolean isHideMessage() { return hideMessage; }
     public boolean isShouldPlaySound() { return shouldPlaySound; }
     public boolean isShouldChangeBackground() { return shouldChangeBackground; }
     public int getBackgroundColor() { return backgroundColor; }
@@ -115,6 +116,7 @@ public class ChatFilter {
     public void setExcludeWords(final String words) { this.excludeWords = words; }
     public void setIncludeRegEx(final String regex) { this.includeRegEx = regex; }
     public void setExcludeRegEx(final String regex) { this.excludeRegEx = regex; }
+    public void setHideMessage(final boolean v) { this.hideMessage = v; }
     public void setShouldPlaySound(final boolean play) { this.shouldPlaySound = play; }
     public void setShouldChangeBackground(final boolean change) { this.shouldChangeBackground = change; }
     public void setBackgroundColor(final int color) { this.backgroundColor = color; }

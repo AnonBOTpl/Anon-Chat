@@ -15,6 +15,7 @@ public class ChatWindowSettings {
     @SerializedName("horizontalAnchor") private String horizontalAnchor = "LEFT";
     @SerializedName("boundsPosition") private String boundsPosition = "OUTSIDE";
     @SerializedName("focusedTab") private int focusedTab;
+    @SerializedName("positionLocked") private boolean positionLocked = false;
     @SerializedName("tabs") private List<ChatTabConfig> tabs;
     @SerializedName("configVersion") private int configVersion = 1;
 
@@ -50,6 +51,8 @@ public class ChatWindowSettings {
     public String getHorizontalAnchor() { return horizontalAnchor; }
     public String getBoundsPosition() { return boundsPosition; }
     public int getFocusedTab() { return focusedTab; }
+    public boolean isPositionLocked() { return positionLocked; }
+    public void setPositionLocked(final boolean v) { this.positionLocked = v; }
     public List<ChatTabConfig> getTabs() { return tabs != null ? tabs : Collections.emptyList(); }
 
     public void setX(final float x) { this.x = x; }

@@ -183,11 +183,6 @@ public final class ChatConfig {
         try (final FileWriter writer = new FileWriter(configFile)) {
             gson.toJson(this, writer);
         } catch (final IOException ignored) {}
-
-        // Auto-save to current profile
-        if (currentProfile != null && !currentProfile.isEmpty()) {
-            saveProfile(currentProfile);
-        }
     }
 
     public ChatWindowSettings getMainWindow() {
