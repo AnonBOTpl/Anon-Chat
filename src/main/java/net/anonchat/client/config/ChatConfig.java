@@ -168,6 +168,12 @@ public final class ChatConfig {
         } catch (final IOException ignored) {}
     }
 
+    /** Re-read the currently active profile from disk and apply it. */
+    public void reloadCurrentProfile() {
+        final String name = currentProfile != null ? currentProfile : "default";
+        loadProfile(name);
+    }
+
     /** Delete a named profile. Returns false for "default". */
     public boolean deleteProfile(final String name) {
         if ("default".equals(name)) return false;

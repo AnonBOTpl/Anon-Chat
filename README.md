@@ -102,6 +102,22 @@ Your existing `chat.json` from LabyMod is **fully compatible**. Simply:
 
 ---
 
+## 🛠 Companion Tool: Filter Editor
+
+The **AnonChat Filter Editor** is a standalone Windows app that lets you manage your filter tags **outside the game**.
+
+**The problem it solves:** Minecraft's in-game text field strips the `§` color code, so you can't type precise tags like `Money§8`. The editor writes the JSON directly with literal `§`, so color-precise tags work.
+
+**What it does:**
+- Browse your profiles from `%APPDATA%/AnonChatMC/profiles/` (the main `chat.json` is protected)
+- Load daily chat logs or raw Minecraft logs (`latest.log`) and see **unique messages with occurrence counters**
+- Add any log message as a tag to a filter with one click
+- Bilingual UI (English/Polish) — language auto-detected and remembered
+
+➡️ **Download the latest version:** [GitHub Releases](https://github.com/AnonBOTpl/Anon-Chat/releases) → download `AnonChatFilterEditor-0.2.4.exe` (no Python required)
+
+---
+
 ## 🖥️ Configuration File Location
 
 | OS | Path |

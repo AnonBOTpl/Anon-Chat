@@ -913,6 +913,19 @@ public final class AnonChatConfigScreen extends Screen {
         this.addDrawableChild(lbl("\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500", px, y));
         y += 16;
 
+        // Reload current profile from disk (picks up external edits)
+        this.addDrawableChild(ButtonWidget.builder(
+            tr("key.anonchat.profiles.reload"),
+            btn -> {
+                if (ChatConfig.getInstance() != null) {
+                    ChatConfig.getInstance().reloadCurrentProfile();
+                    net.anonlauncher.chatmod.AnonChatMod.reloadEverything();
+                    markDirty();
+                }
+            }
+        ).dimensions(px, y, 150, 18).tooltip(Tooltip.of(tr("key.anonchat.tooltip.profile_reload"))).build());
+        y += 24;
+
         this.addDrawableChild(lbl(tr("key.anonchat.profiles.save_as").getString(), px, y));
         profileNameField = new TextFieldWidget(textRenderer, px + 100, y - 2, 150, 18, Text.literal(""));
         profileNameField.setMaxLength(32);

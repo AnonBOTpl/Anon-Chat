@@ -820,6 +820,19 @@ public final class AnonChatConfigScreen extends Screen {
         addRenderableWidget(lbl("\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500", px, y));
         y += 16;
 
+        // Reload current profile from disk (picks up external edits)
+        addRenderableWidget(Button.builder(
+            tr("key.anonchat.profiles.reload"),
+            btn -> {
+                if (ChatConfig.getInstance() != null) {
+                    ChatConfig.getInstance().reloadCurrentProfile();
+                    net.anonchat.client.AnonChatMod.reloadEverything();
+                    markDirty();
+                }
+            }
+        ).bounds(px, y, 150, 18).tooltip(Tooltip.create(tr("key.anonchat.tooltip.profile_reload"))).build());
+        y += 24;
+
         // ── Save as ──
         addRenderableWidget(lbl(tr("key.anonchat.profiles.save_as").getString(), px, y));
         profileNameField = new EditBox(font, px + 100, y - 2, 150, 18, Component.literal(""));

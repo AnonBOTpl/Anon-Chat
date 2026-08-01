@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.4] — 2026-08-01
+
+### ✨ New Features
+
+- **Reload Profile button** — in Settings → Profiles, the ↻ Reload button re-reads the active profile from disk. No more restarting or switching profiles back and forth after editing files externally.
+
+### 🛠 Companion Tool
+
+- **AnonChat Filter Editor** — standalone Windows app for editing filter tags outside the game. Solves the problem that Minecraft's in-game text field strips the `§` color code, so precise tags like `Money§8` cannot be typed in-game. The editor also analyzes chat logs and adds messages as tags with one click.
+  - Language auto-detected (PL/EN) and **remembered** between sessions
+  - Default chat log folder: `%APPDATA%/AnonChatMC/chatlog` + support for raw Minecraft `*.log` files
+  - Warns about **unsaved changes** when closing the window
+  - The main `chat.json` stays protected — only profiles can be edited
+
 ## [0.2.3] — 2026-07-22
 
 ### 🔧 Fixes

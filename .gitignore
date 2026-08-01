@@ -56,3 +56,10 @@ nowe-funkcje.md
 PLAN-POPRAWEK-PO-AUDYCIE.md
 AUDYT_PROJEKTU.md
 task-weryfikacja-audytu.md
+
+# --- Python / Filter Editor tool ---
+__pycache__/
+*.pyc
+tools/filter_editor/build/
+tools/filter_editor/dist/
+tools/filter_editor/*.spec

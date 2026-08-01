@@ -84,6 +84,7 @@
 
   "key.anonchat.profiles.title": "\u00a7lProfiles",
   "key.anonchat.profiles.load": "\u25b6 Load",
+  "key.anonchat.profiles.reload": "\u21bb Reload",
   "key.anonchat.profiles.save_as": "Save current config as:",
   "key.anonchat.profiles.save_btn": "\u25a0 Save",
   "key.anonchat.profiles.save_hint": "(empty = overwrite current profile)",
@@ -93,6 +94,7 @@
   "key.anonchat.tooltip.include_tag": "Messages with this text appear only in this tab",
   "key.anonchat.tooltip.exclude_tag": "Messages with this text are blocked",
   "key.anonchat.tooltip.profile_load": "Load settings from this profile",
+  "key.anonchat.tooltip.profile_reload": "Reload current profile from disk (applies external edits)",
   "key.anonchat.tooltip.profile_save": "Save current config as a profile",
   "key.anonchat.tooltip.profile_delete": "Delete this profile permanently",
   "key.anonchat.tooltip.open_config": "Open config and data folder",

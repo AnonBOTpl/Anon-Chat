@@ -84,6 +84,7 @@
 
   "key.anonchat.profiles.title": "\u00a7lProfile",
   "key.anonchat.profiles.load": "\u25b6 Wczytaj",
+  "key.anonchat.profiles.reload": "\u21bb Prze\u0142aduj",
   "key.anonchat.profiles.save_as": "Zapisz obecny config jako:",
   "key.anonchat.profiles.save_btn": "\u25a0 Zapisz",
   "key.anonchat.profiles.save_hint": "(pusta = nadpisz obecny profil)",
@@ -93,6 +94,7 @@
   "key.anonchat.tooltip.include_tag": "Wiadomo\u015bci z tym tekstem pojawi\u0105 si\u0119 TYLKO w tej karcie",
   "key.anonchat.tooltip.exclude_tag": "Wiadomo\u015bci z tym tekstem zostan\u0105 zablokowane",
   "key.anonchat.tooltip.profile_load": "Wczytaj ustawienia z tego profilu",
+  "key.anonchat.tooltip.profile_reload": "Prze\u0142aduj obecny profil z dysku (pobiera zmiany z edytora)",
   "key.anonchat.tooltip.profile_save": "Zapisz obecny config jako profil",
   "key.anonchat.tooltip.profile_delete": "Usu\u0144 ten profil na sta\u0142e",
   "key.anonchat.tooltip.open_config": "Otw\u00f3rz folder z configiem i danymi",
