@@ -4,11 +4,7 @@
 
 Take full control of your chat experience. Organize messages into separate windows, filter out noise, highlight player mentions, save chat history, and switch between complete configuration profiles — all without leaving the game.
 
-![Modrinth](https://img.shields.io/badge/Modrinth-1BD96A?style=flat-square&logo=modrinth)
-![Fabric](https://img.shields.io/badge/Fabric-dbd0b4?style=flat-square&logo=fabricmc)
-![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)
-
-![AnonChat Mod demo](images/Animation3.gif)
+![AnonChat Mod demo](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/Animation3.gif)
 
 ---
 
@@ -56,11 +52,11 @@ Define **include** and **exclude** tags for each tab to route messages exactly w
 ## 📦 Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) — `0.16.9+` for 1.21.1–1.21.5, `0.19.3+` for 26.1.2/26.2
-2. Install [Fabric API](https://modrinth.com/mod/fabric-api) — `0.110.0+1.21.1` for 1.21.x, `0.154.2+26.1.2` / `0.154.2+26.2` for 26.x
+2. Install [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) — `0.110.0+1.21.1` for 1.21.x, `0.154.2+26.1.2` / `0.154.2+26.2` for 26.x
 3. Make sure you have the required Java version — `Java 21+` for 1.21.x, `Java 25+` for 26.x
 4. Download the AnonChat Mod JAR for your version
 5. Place the JAR in your `mods/` folder
-6. (Optional) Install [ModMenu](https://modrinth.com/mod/modmenu) for an additional config entry point
+6. (Optional) Install [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) for an additional config entry point
 
 ---
 
@@ -87,13 +83,13 @@ The **AnonChat Filter Editor** is a standalone Windows app that lets you manage 
 - Click **> Settings** to open the configuration screen
 - Or press the keybind (if set via ModMenu)
 
-![Settings screen](images/settings.png)
+![Settings screen](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/settings.png)
 
 ### Creating Windows & Tabs
 - Use the **hamburger menu** on any window to add/remove tabs or create new windows
 - In Settings → left panel, expand/collapse windows and manage individual tabs
 
-![Tab settings](images/tab-settings.png)
+![Tab settings](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/tab-settings.png)
 
 ### Setting Up Filters
 1. Select a tab in the left panel
@@ -102,7 +98,7 @@ The **AnonChat Filter Editor** is a standalone Windows app that lets you manage 
 4. Add **Exclude** tags — messages with these words are blocked everywhere
 5. Configure additional actions: play sound, change background
 
-![Filters configuration](images/filters.png)
+![Filters configuration](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/filters.png)
 
 ### Using Profiles
 1. In Settings → **☰ Profiles**

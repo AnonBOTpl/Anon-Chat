@@ -4,11 +4,7 @@
 
 Take full control of your chat experience. Organize messages into separate windows, filter out noise, highlight player mentions, save chat history, and switch between complete configuration profiles — all without leaving the game.
 
-![Modrinth](https://img.shields.io/badge/Modrinth-1BD96A?style=flat-square&logo=modrinth)
-![Fabric](https://img.shields.io/badge/Fabric-dbd0b4?style=flat-square&logo=fabricmc)
-![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)
-
-![AnonChat Mod demo](images/Animation3.gif)
+![AnonChat Mod demo](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/Animation3.gif)
 
 ---
 
@@ -87,13 +83,13 @@ The **AnonChat Filter Editor** is a standalone Windows app that lets you manage 
 - Click **> Settings** to open the configuration screen
 - Or press the keybind (if set via ModMenu)
 
-![Settings screen](images/settings.png)
+![Settings screen](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/settings.png)
 
 ### Creating Windows & Tabs
 - Use the **hamburger menu** on any window to add/remove tabs or create new windows
 - In Settings → left panel, expand/collapse windows and manage individual tabs
 
-![Tab settings](images/tab-settings.png)
+![Tab settings](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/tab-settings.png)
 
 ### Setting Up Filters
 1. Select a tab in the left panel
@@ -102,7 +98,7 @@ The **AnonChat Filter Editor** is a standalone Windows app that lets you manage 
 4. Add **Exclude** tags — messages with these words are blocked everywhere
 5. Configure additional actions: play sound, change background
 
-![Filters configuration](images/filters.png)
+![Filters configuration](https://raw.githubusercontent.com/AnonBOTpl/Anon-Chat/main/images/filters.png)
 
 ### Using Profiles
 1. In Settings → **☰ Profiles**

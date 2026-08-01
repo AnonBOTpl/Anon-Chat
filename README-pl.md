@@ -63,6 +63,22 @@ Zdefiniuj **tagi włączające i wykluczające** dla każdej karty, by kierować
 
 ---
 
+## 🛠 Narzędzie pomocnicze: Filter Editor
+
+**AnonChat Filter Editor** to samodzielna aplikacja Windows, która pozwala zarządzać tagami filtrów **poza grą**.
+
+**Problem, który rozwiązuje:** pole tekstowe w grze Minecraft usuwa znak `§`, więc nie możesz wpisać precyzyjnych tagów, np. `Money§8`. Edytor zapisuje JSON bezpośrednio z dosłownym znakiem `§`, dzięki czemu precyzyjne tagi kolorów działają.
+
+**Co potrafi:**
+- Przeglądaj swoje profile z `%APPDATA%/AnonChatMC/profiles/` (główny plik `chat.json` jest chroniony)
+- Wczytuj dzienne chatlogi lub surowe logi Minecrafta (`latest.log`) i zobacz **unikalne wiadomości z licznikiem wystąpień**
+- Dodaj dowolną wiadomość z loga jako tag do filtra jednym kliknięciem
+- Dwujęzyczny interfejs (polski/angielski) — język wykrywany automatycznie i zapamiętywany
+
+➡️ **Pobierz najnowszą wersję:** [GitHub Releases](https://github.com/AnonBOTpl/Anon-Chat/releases) → pobierz `AnonChatFilterEditor-0.2.4.exe` (Python nie jest wymagany)
+
+---
+
 ## 🎮 Jak używać
 
 ### Pierwsze uruchomienie
