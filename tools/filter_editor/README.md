@@ -1,58 +1,60 @@
 # AnonChat Filter Editor
 
-Graficzny edytor filtrów/tagów dla configu moda **AnonChat** (profile).
+A graphical filter/tag editor for the **AnonChat** mod's config (profiles).
 
-Rozwiązuje problem, którego nie da się obejść w grze: **UI Minecrafta kasuje znak §**
-z wpisywanych tagów (zabezpieczenie `StringUtil.filterText`). Ten edytor zapisuje JSON
-w UTF-8 z literalnym § — więc tagi takie jak `Money§8` działają.
+Solves a problem you can't work around in-game: **Minecraft's UI strips the §
+character** from typed tags (a `StringUtil.filterText` safeguard). This editor
+writes JSON in UTF-8 with a literal § — so tags like `Money§8` actually work.
 
-> 🔒 **Główny `chat.json` jest chroniony** — edytor pozwala pracować wyłącznie na
-> profilach z folderu `profiles/`. Nigdy nie nadpisuje `chat.json`.
+> 🔒 **The main `chat.json` is protected** — the editor only lets you work on
+> profiles from the `profiles/` folder. It never overwrites `chat.json`.
 
-## Funkcje
+## Features
 
-- 🗂 Dropdown skanuje tylko profile z `%APPDATA%/AnonChatMC/profiles/`
-  (pierwszy profil ładuje się automatycznie przy starcie)
-- 📖 Analizuje pliki z `%APPDATA%/AnonChatMC/chatlog/` (dzienne logi moda) i pokazuje
-  **unikalne wiadomości z licznikiem wystąpień** (sortowane po częstotliwości)
-- 📜 Obsługuje też **surowe logi Minecrafta** (`*.log`, np. `latest.log`) — wystarczy
-  wybrać plik w okienku (domyślnie otwiera się folder chatlogu)
-- ➕ Dodaje wiadomość z loga jako tag INCLUDE/EXCLUDE do wybranego filtra
-  (z zachowaniem §; możesz skrócić tekst w oknie dialogowym)
-- ✏️ Dodawanie/usuwanie tagów ręcznie, edycja nazwy filtra, opcje (ukryj, dźwięk)
-- 🌐 Dwujęzyczny interfejs (PL/EN) — wykrywa język systemu, wybór jest **zapamiętywany**
-- ⚠️ Ostrzega o **niezapisanych zmianach** przy zamykaniu okna (Zapisz / Nie zapisuj / Anuluj)
-- 💾 Opcjonalny backup przy zapisie — pytanie Tak/Nie/Anuluj (`chat.json.bak-<timestamp>`)
-- ℹ️ Zmiany tagów nie zapisują się automatycznie — kliknij **Zapisz**, aby zapisać na dysku
+- 🗂 Dropdown scans only profiles from `%APPDATA%/AnonChatMC/profiles/`
+  (the first profile loads automatically on startup)
+- 📖 Parses files from `%APPDATA%/AnonChatMC/chatlog/` (the mod's daily logs)
+  and shows **unique messages with an occurrence counter** (sorted by frequency)
+- 📜 Also supports **raw Minecraft logs** (`*.log`, e.g. `latest.log`) — just
+  pick the file in the file picker (opens the chatlog folder by default)
+- ➕ Add a message from the log as an INCLUDE tag on the selected filter
+  (preserves §; you can shorten the text in the dialog)
+- ✏️ Manually add/remove tags, edit filter name, toggle options (hide, sound)
+- 🌐 Bilingual interface (PL/EN) — detects system language, choice is **remembered**
+- ⚠️ Warns about **unsaved changes** when closing the window (Save / Don't Save / Cancel)
+- 💾 Optional backup on save — Yes/No/Cancel prompt (`chat.json.bak-<timestamp>`)
+- ℹ️ Tag changes aren't saved automatically — click **Save** to write to disk
 
-## Uruchomienie (Python)
+## Running (Python)
 
 ```bash
 pip install -r requirements.txt
 python main.py
 ```
 
-Edytor zawsze czyta profile z `%APPDATA%/AnonChatMC/profiles/`.
-Jeśli folder jest pusty, dropdown pokazuje „—” — najpierw zapisz profil w grze.
+The editor always reads profiles from `%APPDATA%/AnonChatMC/profiles/`.
+If the folder is empty, the dropdown shows "—" — save a profile in-game first.
 
-Główny `chat.json` (ten sam folder, którego używa mod) jest tylko do odczytu —
-nigdy nie jest edytowany ani nadpisywany.
+The main `chat.json` (the same folder the mod uses) is read-only —
+it is never edited or overwritten.
 
-## Budowanie standalone exe (bez Pythona u użytkownika)
+## Building a standalone exe (no Python required for the end user)
 
 ```bash
 pip install pyinstaller
 pyinstaller --noconfirm --onefile --windowed --name AnonChatFilterEditor main.py
 ```
 
-Gotowy plik: `dist/AnonChatFilterEditor.exe` — można go rozpowszechniać;
-użytkownik nie musi mieć zainstalowanego Pythona.
+Resulting file: `dist/AnonChatFilterEditor.exe` — this can be distributed;
+the user doesn't need Python installed.
 
-## Wskazówki
+## Tips
 
-- Tag z § (np. `Money§8`) jest **precyzyjny** — pasuje tylko tam, gdzie w wiadomości
-  występuje dokładnie ten kolor. Usunięcie § daje luźniejsze dopasowanie.
-- Filtry działają jak w grze: wiadomość z tagiem INCLUDE trafia do taba filtra
-  (i jest usuwana z maina), tag EXCLUDE ukrywa.
-- Po zapisie zrób reload configu w grze (przełącz profil tam i z powrotem albo
-  użyj klawisza reload), aby mod wczytał zmiany.
+- A tag with § (e.g. `Money§8`) is **precise** — it only matches where the
+  message has exactly that color code. Removing § gives a looser match.
+- Filters work the same as in-game: a message matching an INCLUDE tag goes
+  to that filter's tab. If **"Hide message"** is enabled on that filter, the
+  message is routed only to that tab and removed from the main window,
+  instead of appearing in both places.
+- After saving, reload the config in-game (switch profiles back and forth,
+  or use the reload key) so the mod picks up the changes.
